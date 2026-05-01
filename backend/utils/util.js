@@ -1,4 +1,8 @@
+require("dotenv").config();
 const jwt = require('jsonwebtoken');
+const {Resend} = require(`resend`);
+
+//token gennerater
 
 const genneratetoken = (userid, res) => {
     const token = jwt.sign({ userid },
@@ -17,7 +21,18 @@ const genneratetoken = (userid, res) => {
     return token;
 };
 
+//resend 
+
+const resendclient = new Resend(process.env.RESEND_API_KEY);
+
+const sender = {
+    email: process.env.EMAIL_FROM,
+    name: process.env.EMAIL_FROM_NAME
+}
+
 
 module.exports = {
-    genneratetoken
+    genneratetoken,
+    resendclient,
+    sender
 }

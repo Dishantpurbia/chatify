@@ -1,7 +1,9 @@
+require("dotenv").config();
 const User = require(`../model/User`);
 const validator = require(`validator`);
 const bcrypt = require("bcryptjs");
 const { genneratetoken } = require(`../utils/util`);
+const { sendwellcomemail } = require(`../emails//emailhandlers`);
 
 const register = async (req, res) => {
     try {
@@ -32,12 +34,19 @@ const register = async (req, res) => {
             await newuser.save();
             genneratetoken(newuser._id, res)
 
+            try {
+                await sendwellcomemail(newuser.name, newuser.email, process.env.CLIENT_URL);
+            } catch (error) {
+                console.log("failed to send wellcome email", error);
+            }
+
             return res.status(201).json({
                 _id: newuser._id,
                 name: newuser.name,
                 email: newuser.email,
                 profilepic: newuser.profilepic
             })
+
         } else {
             return res.status(400).json({ message: "invalid user data" });
         }
