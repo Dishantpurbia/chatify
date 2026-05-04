@@ -4,6 +4,7 @@ const validator = require(`validator`);
 const bcrypt = require("bcryptjs");
 const { genneratetoken } = require(`../utils/util`);
 const { sendwellcomemail } = require(`../emails//emailhandlers`);
+const { cloudinary } = require(`../utils/cloudinary`);
 
 const register = async (req, res) => {
     try {
@@ -57,16 +58,82 @@ const register = async (req, res) => {
     }
 };
 
-const login = (req, res) => {
+const login = async (req, res) => {
+    try {
+        const { email, password } = req.body;
 
+        if (!email || !password) {
+            return res.json({ success: false, message: "both email and password is required" });
+        }
+
+        const user = await User.findOne({ email });
+
+        if (!user) {
+            return res.json({ success: false, message: "user not found" });
+        }
+
+        const ismatch = await bcrypt.compare(password, user.password);
+
+        if (!ismatch) {
+            return res.json({ success: false, message: "wrong password" });
+        }
+
+        genneratetoken(user._id, res);
+
+        return res.json({
+            _id: user._id,
+            name: user.name,
+            email: user.email,
+            profilepic: user.profilepic
+        });
+    } catch (error) {
+        console.log(error);
+        return res.json({ success: false, message: "internal server error" });
+    }
 };
 
 const logout = (req, res) => {
+    
+    res.cookie("jwt", "", {
+        maxAge: 0
+    }).json({ success: true, message: "logout successfully" });
 
+};
+
+const profilupdate = async (req, res) => {
+    try {
+        const { profilepic } = req.body;
+
+        if (!profilepic) {
+            return res.json({ success: false, message: "Profile pic is required" });
+        }
+
+        const uploadResponse = await cloudinary.uploader.upload(profilepic);
+
+        const updatedUser = await User.findByIdAndUpdate(
+            req.user._id,
+            { profilepic: uploadResponse.secure_url },
+            { new: true }
+        );
+
+        return res.json({
+            success: true,
+            message: "Profile updated successfully",
+            updatedUser
+        });
+
+    } catch (error) {
+        console.log(error);
+        return res.json({
+            success: false,
+            message: "Internal server error"
+        });
+    }
 };
 
 module.exports = {
     register,
     login,
-    logout
+    logout,
+    profilupdate
 }
