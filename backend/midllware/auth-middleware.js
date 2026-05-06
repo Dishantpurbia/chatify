@@ -3,7 +3,7 @@ const User = require("../model/User");
 
 const protectrouth = async(req,res,next) => {
     try {
-        const token = req.cookie.jwt;
+        const token = req.cookies.jwt;
         if(!token) return res.status(401).json({success:false,message:"unauthorized - no token is provided"});
         
         const decoded = await jwt.verify(token,process.env.JWT_SECRET);

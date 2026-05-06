@@ -5,10 +5,12 @@ const arcjetprotection = require(`../midllware/aj-middleware`);
 const {protectrouth} = require(`../midllware/auth-middleware`);
 const {register,login,logout,profilupdate} = require(`../controller/auth-controller`);
 
+router.use(arcjetprotection);
+
 router.post(`/register`,register);
 router.post(`/login`,login);
 router.get(`/logout`,logout);
-router.patch(`profile-update`,protectrouth,profilupdate);
+router.patch(`profile-update`,profilupdate);
 
 
 module.exports = router;

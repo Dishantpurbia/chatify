@@ -1,8 +1,10 @@
 const  express = require("express");
 const dotenv = require("dotenv");
-const authroute = require(`./routes/authroutes`);
 const connectdb = require(`./config/db`);
 const cookieparser = require(`cookie-parser`); 
+
+const authroute = require(`./routes/authroutes`);
+const messageroute = require(`./routes/messageroute`);
 
 dotenv.config();
 
@@ -18,6 +20,7 @@ app.use(cookieparser());
 connectdb();
 
 app.use(`/api/auth`,authroute);
+app.use(`/api/message`,messageroute);
 
 app.listen( port ,() => 
      console.log("server is running on port : "+port)
