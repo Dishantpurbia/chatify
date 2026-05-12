@@ -7,10 +7,14 @@ const {register,login,logout,profilupdate} = require(`../controller/auth-control
 
 router.use(arcjetprotection);
 
-router.post(`/register`,register);
+router.post(`/signup`,register);
 router.post(`/login`,login);
-router.get(`/logout`,logout);
-router.patch(`profile-update`,profilupdate);
+router.post(`/logout`,logout);
 
+router.put(`profile-update`,profilupdate);
+
+router.get(`/check`,protectrouth,(req,res) => {
+    return res.status(200).json(req.user);
+});
 
 module.exports = router;

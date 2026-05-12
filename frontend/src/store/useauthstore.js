@@ -1,0 +1,70 @@
+import { create } from 'zustand';
+import axiosinstance from "../lib/axios";
+import signup from '../page/signup';
+import toast from 'react-hot-toast'
+
+export const useauthstore = create((set) => ({
+    authuser: null,
+    ischeckingauth: true,
+    issigningup: false,
+    islogin:false,
+    isloggedout: false,
+
+    checkauth: async () => {
+        try {
+            const res = await axiosinstance.get("/auth/check");
+            set({ authuser: res.data });
+        } catch (error) {
+            console.log("error in authcheck", error);
+            set({ authuser: null })
+        } finally {
+            set({ ischeckingauth: false })
+        }
+    },
+
+    signup: async (data) => {
+        set({ issigningup: true })
+        try {
+            const res = await axiosinstance.post("/auth/signup", data);
+            set({ authuser: res.data });
+
+            toast.success('SignUp successfully');
+
+        } catch (error) {
+            console.log(error);
+            toast.error(error.response.data.message);
+        } finally {
+            set({ issigningup: false })
+        }
+    },
+
+    login : async(data) => {
+        set({islogin:true})
+        try {
+            const res = await axiosinstance.post('/auth/login',data);
+            set({authuser:res.data})
+            toast.success("Login successfully");
+        } catch (error) {
+            console.log(error);
+            toast.error(error.response.data.message);
+        }finally{
+            set({islogin:false})
+        }
+    },
+
+    loggedout: async() => {
+        set({isloggedout:true})
+        try {
+            const res = await axiosinstance.post("/auth/logout");
+            set({authuser:null});
+
+            toast.success('loggedout successfully')
+
+        } catch (error) {
+            console.log(error);
+            toast.error(error.response.data.message);
+        }finally{
+            set({isloggedout:false})
+        }
+    }
+}));
