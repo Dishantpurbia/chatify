@@ -11,7 +11,7 @@ router.post(`/signup`,register);
 router.post(`/login`,login);
 router.post(`/logout`,logout);
 
-router.put(`profile-update`,profilupdate);
+router.put(`/profile-update`,protectrouth,profilupdate);
 
 router.get(`/check`,protectrouth,(req,res) => {
     return res.status(200).json(req.user);

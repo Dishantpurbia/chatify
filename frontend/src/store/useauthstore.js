@@ -7,7 +7,7 @@ export const useauthstore = create((set) => ({
     authuser: null,
     ischeckingauth: true,
     issigningup: false,
-    islogin:false,
+    islogin: false,
     isloggedout: false,
 
     checkauth: async () => {
@@ -38,33 +38,44 @@ export const useauthstore = create((set) => ({
         }
     },
 
-    login : async(data) => {
-        set({islogin:true})
+    login: async (data) => {
+        set({ islogin: true })
         try {
-            const res = await axiosinstance.post('/auth/login',data);
-            set({authuser:res.data})
+            const res = await axiosinstance.post('/auth/login', data);
+            set({ authuser: res.data })
             toast.success("Login successfully");
         } catch (error) {
             console.log(error);
             toast.error(error.response.data.message);
-        }finally{
-            set({islogin:false})
+        } finally {
+            set({ islogin: false })
         }
     },
 
-    loggedout: async() => {
-        set({isloggedout:true})
+    loggedout: async () => {
+        set({ isloggedout: true })
         try {
             const res = await axiosinstance.post("/auth/logout");
-            set({authuser:null});
+            set({ authuser: null });
 
             toast.success('loggedout successfully')
 
         } catch (error) {
             console.log(error);
             toast.error(error.response.data.message);
-        }finally{
-            set({isloggedout:false})
+        } finally {
+            set({ isloggedout: false })
+        }
+    },
+
+    getprofile: async (profilepic) => {
+        try {
+            const res = await axiosinstance.put("/auth/profile-update",profilepic)
+            set({authuser: res.data.updatedUser});
+            toast.success("Profile updated successfully");
+        } catch (error) {
+            console.log(error);
+            toast.error(error.response.data.message)
         }
     }
 }));

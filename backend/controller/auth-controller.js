@@ -4,7 +4,7 @@ const validator = require(`validator`);
 const bcrypt = require("bcryptjs");
 const { genneratetoken } = require(`../utils/util`);
 const { sendwellcomemail } = require(`../emails//emailhandlers`);
-const { cloudinary } = require(`../utils/cloudinary`);
+const  cloudinary  = require(`../utils/cloudinary`);
 
 const register = async (req, res) => {
     try {
@@ -103,6 +103,7 @@ const logout = (req, res) => {
 const profilupdate = async (req, res) => {
     try {
         const { profilepic } = req.body;
+        const userid = req.user._id 
 
         if (!profilepic) {
             return res.json({ success: false, message: "Profile pic is required" });
@@ -111,7 +112,7 @@ const profilupdate = async (req, res) => {
         const uploadResponse = await cloudinary.uploader.upload(profilepic);
 
         const updatedUser = await User.findByIdAndUpdate(
-            req.user._id,
+            userid,
             { profilepic: uploadResponse.secure_url },
             { new: true }
         );
