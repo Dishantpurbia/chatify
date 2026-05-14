@@ -4,11 +4,11 @@ import { usechatstore } from '../store/usechatstore';
 import ProfilHeader from '../components/ProfilHeader';
 import ActiveTabSwitch from '../components/ActiveTabSwitch';
 import ChatList from '../components/ChatList';
-import Contactlist from '../components/ContactList';
+import ContactList from '../components/ContactList';
 import ChatContainer from '../components/ChatContainer';
 import NoConversationPlaceholder from '../components/NoConversationPlaceholder';
 
-const chat = () => {
+const Chat = () => {
 
   const { activetab,selecteduser } = usechatstore();
 
@@ -20,8 +20,8 @@ const chat = () => {
           <ProfilHeader />
           <ActiveTabSwitch />
 
-          <div className='flex-1 overflow-y-auto p-4 space-y-2'>
-            {activetab === "chat" ? <ChatList /> :
+          <div className='flex-1 overflow-y-auto h-screen hide-scrollbar p-4 space-y-2'>
+            {activetab === "Chats" ? <ChatList /> :
               <ContactList />}
           </div>
         </div>
@@ -35,4 +35,4 @@ const chat = () => {
   )
 }
 
-export default chat
+export default Chat

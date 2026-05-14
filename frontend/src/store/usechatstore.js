@@ -7,7 +7,7 @@ export const usechatstore = create((set,get) => ({
     allcontact: [],
     chats: [],
     message: [],
-    activetab: 'chat',
+    activetab: 'Chats',
     selecteduser: null,
     isuserloading: false,
     ismessageloading: false,
@@ -25,7 +25,7 @@ export const usechatstore = create((set,get) => ({
         set({isuserloading:true})
         try {
             const res = await axiosinstance.get("/message/contacts");
-            set({allcontact: res.data});
+            set({allcontact: res.data.user});
         } catch (error) {
             console.log(error);
             toast.error(error.response.data.message);
@@ -38,12 +38,22 @@ export const usechatstore = create((set,get) => ({
         set({isuserloading:true})
         try {
             const res = await axiosinstance.get("/message/chats");
-            set({chats: res.data});
+            set({chats: res.data.user});
         } catch (error) {
             console.log(error);
             toast.error(error.response.data.message)
         }finally {
             set({isuserloading:false});
+        }
+    },
+
+    sendmessage: async(partnerid,text) =>{
+        try {
+            const res = await axiosinstance.post(`/message/send/${partnerid}`,{text})
+            set({message:res.data.newmessage})
+        } catch (error) {
+            console.log(error);
+            toast.error(error.response.data.message);
         }
     }
     

@@ -16,15 +16,15 @@ const ProfilHeader = () => {
 
   const imghandler = (e) => {
     const file = e.target.files[0];
-    if(!file) return;
+    if (!file) return;
 
     const reader = new FileReader();
     reader.readAsDataURL(file);
 
-    reader.onloadend = async() => {
-        const img = reader.result;
-        setselectedimg(img);
-        await getprofile({profilepic:img});
+    reader.onloadend = async () => {
+      const img = reader.result;
+      setselectedimg(img);
+      await getprofile({ profilepic: img });
     }
   }
 
@@ -63,8 +63,7 @@ const ProfilHeader = () => {
           </div>
         </div>
         {/* buttons */}
-        <div className='flex gap-4 items-center'>
-          {/*Logout btn */}
+        <div className='flex flex-row max-[450px]:flex-col items-center gap-4'>          {/*Logout btn */}
           <button className='text-slate-400 hover:text-slate-200 transition-colors'
             onClick={loggedout}>
 
