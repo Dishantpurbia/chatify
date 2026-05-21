@@ -52,3 +52,12 @@
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+@media (max-height: 700px) {
+  
+  .container {
+    height: 80vh;
+    padding: 10px;
+  }
+
+}

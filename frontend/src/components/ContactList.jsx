@@ -3,7 +3,7 @@ import { usechatstore } from '../store/usechatstore'
 import UserLoadingSkeleton from './UserLoadingSkeleton';
 
 const ContactList = () => {
-  const { allcontact, getallcontact, isuserloading } = usechatstore();
+  const { allcontact, getallcontact,setselecteduser, isuserloading } = usechatstore();
 
   useEffect(() => {
     getallcontact();
@@ -21,6 +21,7 @@ const ContactList = () => {
           rounded-2xl cursor-pointer 
           transition-all duration-200 shadow-md
           mb-2 scrollbar-hide'
+          onClick={()=>setselecteduser(contact)}
         >
           {/* Profile Image */}
           <div className='relative'>

@@ -12,7 +12,7 @@ export const usechatstore = create((set,get) => ({
     isuserloading: false,
     ismessageloading: false,
     issoundenable: localStorage.getItem("issoundenable") === "true",
-        
+            
     togglesound : () => {
         localStorage.setItem("issoundenable",!get().issoundenable);
         set({issoundenable: !get().issoundenable});
@@ -47,14 +47,28 @@ export const usechatstore = create((set,get) => ({
         }
     },
 
-    sendmessage: async(partnerid,text) =>{
+    sendmessage: async(data) =>{
+        const {message,selecteduser} = get();
         try {
-            const res = await axiosinstance.post(`/message/send/${partnerid}`,{text})
-            set({message:res.data.newmessage})
+            const res = await axiosinstance.post(`/message/send/${selecteduser._id}`,data)
+            set({message:message.concat(res.data?.newmessage)})
         } catch (error) {
             console.log(error);
             toast.error(error.response.data.message);
         }
-    }
+    },
+
+    getmessage : async(partnerid)=>{
+        set({ismessageloading:true});
+        try {
+            const res = await axiosinstance.get(`/message/${partnerid}`);
+            set({message:res.data.message});
+        } catch (error) {
+            console.log(error)
+            toast(error.response.data.message);
+        }finally{
+            set({ismessageloading:false})
+        }
+    },
     
 }))

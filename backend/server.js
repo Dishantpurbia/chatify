@@ -6,11 +6,9 @@ const cors = require(`cors`);
 
 const authroute = require(`./routes/authroutes`);
 const messageroute = require(`./routes/messageroute`);
+const {app,server} = require('./utils/socket');
 
 dotenv.config();
-
-
-const app = express();
 
 const port = process.env.PORT || 4000;
 
@@ -28,6 +26,6 @@ connectdb();
 app.use(`/api/auth`, authroute);
 app.use(`/api/message`, messageroute);
 
-app.listen(port, () =>
+server.listen(port, () =>
      console.log("server is running on port : " + port)
-)
+);

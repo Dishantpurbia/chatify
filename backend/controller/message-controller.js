@@ -1,6 +1,6 @@
 const Message = require(`../model/Message`);
 const User = require(`../model/User`);
-const { cloudinary } = require(`../utils/cloudinary`);
+const  cloudinary  = require(`../utils/cloudinary`);
 
 
 const getallcontacts = async(req,res) => {
@@ -45,13 +45,13 @@ const getmessageuserid = async(req,res) => {
 
         const message = await Message.find({
             $or:[
-                {senderid:userid,recieverid:usertochatid},
-                {senderid:usertochatid,recieverid:userid}
+                {senderid:userid,receiverid:usertochatid},
+                {senderid:usertochatid,receiverid:userid}
             ]
         });
 
         return res.json({success:true,message});
-        
+
     } catch (error) {
         console.log(error);
         return res.json({success:false,message:"internal server error"});

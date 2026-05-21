@@ -5,7 +5,7 @@ import NoChatsFound from "../components/NoChatsFound"
 
 const ChatList = () => {
 
-  const { chats, getmychatpartner, isuserloading } = usechatstore();
+  const { chats, getmychatpartner, isuserloading, setselecteduser } = usechatstore();
 
   useEffect(() => {
     getmychatpartner();
@@ -24,6 +24,7 @@ const ChatList = () => {
           rounded-2xl cursor-pointer 
           transition-all duration-200 shadow-md
           mt-2'
+          onClick={()=>setselecteduser(chat)}
         >
           {/* Profile Image */}
           <div className='relative'>
