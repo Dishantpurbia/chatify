@@ -2,10 +2,12 @@ import React, { useEffect } from 'react'
 import { usechatstore } from '../store/usechatstore'
 import UserLoandingSkeleton from "../components/UserLoadingSkeleton"
 import NoChatsFound from "../components/NoChatsFound"
+import { useauthstore } from '../store/useauthstore'
 
 const ChatList = () => {
 
   const { chats, getmychatpartner, isuserloading, setselecteduser } = usechatstore();
+  const { onlineuser } = useauthstore();
 
   useEffect(() => {
     getmychatpartner();
@@ -19,33 +21,34 @@ const ChatList = () => {
       {chats.map((chat) => (
         <div
           key={chat._id}
-          className='flex items-center gap-4 p-3 
-          bg-gray-800 hover:bg-gray-700 
-          rounded-2xl cursor-pointer 
-          transition-all duration-200 shadow-md
-          mt-2'
-          onClick={()=>setselecteduser(chat)}
+          className="flex items-center gap-4 p-3 
+      bg-gray-800 hover:bg-gray-700 
+      rounded-2xl cursor-pointer 
+      transition-all duration-200 shadow-md
+      mt-2"
+          onClick={() => setselecteduser(chat)}
         >
           {/* Profile Image */}
-          <div className='relative'>
-            <img
-              src={chat.profilepic || '/avatar.png'}
-              alt={chat.name}
-              className='w-12 h-12 rounded-full object-cover border-2 border-gray-600'
-            />
-
-            {/* Online Dot */}
-            <span className='absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-gray-800 rounded-full'></span>
+          <div
+            className={`avatar ${onlineuser.includes(chat._id) ? "online" : ""
+              }`}
+          >
+            <div className="w-12 rounded-full">
+              <img
+                src={chat.profilepic || "/avatar.png"}
+                alt={chat.name}
+              />
+            </div>
           </div>
 
           {/* User Info */}
-          <div className='flex flex-col'>
-            <p className='text-white font-semibold text-sm'>
+          <div className="flex flex-col">
+            <p className="text-white font-semibold text-sm">
               {chat.name}
             </p>
 
-            <p className='text-gray-400 text-xs'>
-              Tap to chat
+            <p className="text-gray-400 text-xs">
+              {onlineuser.includes(chat._id) ? "Online" : "Offline"}
             </p>
           </div>
         </div>

@@ -7,7 +7,7 @@ import MessagesLoadingSkeleton from './MessagesLoadingSkeleton';
 import MessageInput from './MessageInput';
 
 const ChatContainer = () => {
-  const { message, selecteduser, getmessage, ismessageloading } = usechatstore();
+  const { message, selecteduser, getmessage, ismessageloading, socketmessage, unsocketmessage} = usechatstore();
   const { authuser } = useauthstore();
 
   const messagesEndRef = useRef(null);
@@ -15,8 +15,10 @@ const ChatContainer = () => {
   useEffect(() => {
     if (selecteduser?._id) {
       getmessage(selecteduser._id);
+      socketmessage();
+       return ()=> unsocketmessage();
     }
-  }, [selecteduser]);
+  }, [selecteduser,socketmessage,unsocketmessage]);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -54,6 +56,12 @@ const ChatContainer = () => {
                     className="mt-1.5 rounded-lg max-w-full"
                   />
                 )}
+                <p className="text-[10px] text-gray-300 text-right mt-1">
+                  {new Date(msg.createdAt).toLocaleTimeString([], {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })}
+                </p>
               </div>
             </div>
           ))

@@ -7,7 +7,7 @@ const mouseclick = new Audio("sounds/mouse-click.mp3")
 
 const ProfilHeader = () => {
 
-  const { loggedout, authuser, getprofile } = useauthstore();
+  const { loggedout, authuser, getprofile, onlineuser } = useauthstore();
   const { issoundenable, togglesound } = usechatstore();
 
   const [selectedimg, setselectedimg] = useState(null);
@@ -33,7 +33,7 @@ const ProfilHeader = () => {
       <div className='flex items-center justify-between'>
         <div className='flex items-center gap-3'>
           {/* Avatar */}
-          <div className='avatar online'>
+          <div className={`avatar ${onlineuser.includes(authuser._id) ? "online" : ""}`}>
             <button className='size-14 rounded-full overflow-hidden relative group'
               onClick={() => reffile.current.click()}>
 

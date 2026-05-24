@@ -1,6 +1,7 @@
 const Message = require(`../model/Message`);
 const User = require(`../model/User`);
 const  cloudinary  = require(`../utils/cloudinary`);
+const { getreciverid, io } = require("../utils/socket");
 
 
 const getallcontacts = async(req,res) => {
@@ -78,6 +79,11 @@ const sendmessageuserid = async(req,res) => {
         })
 
         await newmessage.save();
+
+        const reciveruserid = await getreciverid(receiverid);
+        if(reciveruserid){
+            io.to(reciveruserid).emit("sendmessage",newmessage);
+        }
 
         return res.json({success:true,newmessage});
     } catch (error) {
