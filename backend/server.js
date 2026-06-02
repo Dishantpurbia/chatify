@@ -22,6 +22,7 @@ app.use(cookieparser());
 
 connectdb();
 
+app.get('/', (req, res) => res.json({ message: 'API is running' }));
 app.use(`/api/auth`, authroute);
 app.use(`/api/message`, messageroute);
 
