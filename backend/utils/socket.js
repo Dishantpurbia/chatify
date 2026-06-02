@@ -17,7 +17,7 @@ io.use(socketauthmiddleware);
 
 const usersocket = {};
 
-const getreciverid = (userid)=>{
+const getreciverid = (userid) => {
     return usersocket[userid]
 };
 
@@ -25,8 +25,9 @@ io.on("connection", (socket) => {
     console.log("A user connection", socket.user.name);
 
     const userid = socket.userid;
-    usersocket[userid] = socket.id
-
+    if (userid) {
+        usersocket[userid] = socket.id;
+    }
     io.emit("getonlineuer", Object.keys(usersocket));
 
     socket.on("disconnect", () => {
@@ -37,5 +38,5 @@ io.on("connection", (socket) => {
 });
 
 module.exports = {
-    app,server,io,getreciverid
+    app, server, io, getreciverid
 };

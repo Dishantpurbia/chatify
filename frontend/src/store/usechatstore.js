@@ -73,17 +73,25 @@ export const usechatstore = create((set, get) => ({
     },
 
     socketmessage: () => {
-        const { selecteduser, message } = get();
+        const { selecteduser } = get();
+
         const socket = useauthstore.getState().socket;
+
         if (!selecteduser || !socket) return;
 
+        // remove old listener first
+        socket.off("sendmessage");
+
         socket.on("sendmessage", (newmessage) => {
-            const selectedrecieverid = newmessage.senderid === selecteduser._id;
 
-            if (!selectedrecieverid) return;
+            const isMessageFromSelectedUser = newmessage.senderid === selecteduser._id;
 
-            set({ message: get().message.concat(newmessage) })
-        })
+            if (!isMessageFromSelectedUser) return;
+
+            set({
+                message: [...get().message, newmessage],
+            });
+        });
     },
 
     unsocketmessage: () => {
