@@ -81,6 +81,7 @@ const login = async (req, res) => {
         genneratetoken(user._id, res);
 
         return res.json({
+            success:true,
             _id: user._id,
             name: user.name,
             email: user.email,

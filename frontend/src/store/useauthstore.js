@@ -53,7 +53,7 @@ export const useauthstore = create((set, get) => ({
         try {
             const res = await axiosinstance.post("/auth/login", data);
 
-            if (res.data.success === false) {
+            if (!res.data || res.data.message === "wrong password" || res.data.message === "user not found") {
                 toast.error(res.data.message);
                 return;
             }
