@@ -1,5 +1,5 @@
 import { MessageCircleIcon } from "lucide-react";
-import { usechatstore} from "../store/useChatStore";
+import { usechatstore} from "../store/usechatStore";
 
 function NoChatsFound() {
   const { setactivetab } = usechatstore();

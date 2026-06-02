@@ -5,7 +5,7 @@ import toast from 'react-hot-toast'
 import { io } from 'socket.io-client'
 import { Navigate } from 'react-router-dom';
 
-const baseurl = import.meta.env.MODE === "development" ? "http://localhost:4000" : "/";
+const baseurl = import.meta.env.MODE === "development" ? "http://localhost:4000" : "https://chatify-backend-rh47.onrender.com";
 
 export const useauthstore = create((set, get) => ({
     authuser: null,
