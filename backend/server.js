@@ -15,8 +15,7 @@ const port = process.env.PORT || 4000;
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 app.use(cors({
-     origin:
-          process.env.CLIENT_URL,
+     origin:"https://chatify-frontend1-exab.onrender.com",
      credentials: true
 }));
 app.use(cookieparser());
